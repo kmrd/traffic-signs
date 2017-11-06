@@ -2,9 +2,9 @@
 <body>
 <?php
 
-$inputcsv = "orgs/b3_2017-11-05-10-12-42_fixes.csv";
-$inputretrocsv = "orgs/b3_2017-11-01-19-57-55_retro2.csv";
-$outputcsv = "b3-output.csv";
+$inputcsv = "orgs/h1_2017-11-04-21-03-26_fixes.csv";
+$inputretrocsv = "orgs/h1_2017-11-04-21-03-23_retro.csv";
+$outputcsv = "h1-output.csv";
 
 // load all of the retro data into an array
 $retro = Array();
@@ -96,10 +96,9 @@ foreach($points as $index => &$row) {
 		// SUPPORT
 		// Add support conditions by spliting the value of [8] into distinct fields
 		if($row[8] != '') {
-			$regex = preg_match('/(2|u|h|l|s|m|w|o|s4|4s|s6|6s|d4|4d|d6|6d)([vgflp])/', strtolower($row[8]), $matches);
+			$regex = preg_match('/(2|u|h|l|s|m|w|o|t|s4|4s|s6|6s|d4|4d|d6|6d)([vgflp])/', strtolower($row[8]), $matches);
 				if(!isset($matches[1]))
 					var_dump($row[0]);
-
 			$row[29] = convertSupportShorthand($matches[1]);
 			$row[30] = $regex === 1 ? convertConditionShorthand($matches[2]) : '';
 		}
@@ -155,7 +154,11 @@ foreach($points as $index => &$row) {
 
 			// Add support conditions by spliting the value of [8] into distinct fields
 			if(isset($supports[$index])) {
-				$regex = preg_match('/(2|u|h|l|s|m|w|o|s4|4s|s6|6s|d4|4d|d6|6d)([vgflp])/', $supports[$index], $matches);
+				$regex = preg_match('/(2|u|h|l|s|m|w|o|t|s4|4s|s6|6s|d4|4d|d6|6d)([vgflp])/', $supports[$index], $matches);
+				if(!isset($matches[1])) {
+					var_dump($row[0]);
+					var_dump($row);
+				}
 				$temprow[29] = convertSupportShorthand($matches[1]);
 				$temprow[30] = convertConditionShorthand( $regex == 1 ? $matches[2] : '' );
 				$current_support = Array($temprow[29], $temprow[30]);
